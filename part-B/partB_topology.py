@@ -76,12 +76,12 @@ def run():
         s3.intf('s3-eth2').setMAC('0A:00:0B:FE:00:02')
 
         r1 = net.get('r1')
-        r1.intf('r1-eth1').setMAC('0A:00:04:01:00:01')  # left
-        r1.intf('r1-eth2').setMAC('0A:00:0E:FE:00:02')  # right
+        r1.intf('r1-eth1').setMAC('0A:00:04:01:00:01')
+        r1.intf('r1-eth2').setMAC('0A:00:0E:FE:00:02')
 
         r2 = net.get('r2')
-        r2.intf('r2-eth1').setMAC('0A:00:05:01:00:01')  # left
-        r2.intf('r2-eth2').setMAC('0A:00:10:FE:00:02')  # right
+        r2.intf('r2-eth1').setMAC('0A:00:05:01:00:01')
+        r2.intf('r2-eth2').setMAC('0A:00:10:FE:00:02')
 
 
         net.start()
