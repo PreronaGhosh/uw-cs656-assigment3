@@ -278,9 +278,6 @@ def install_udp_middlebox_flow( source_dpid
     # 
     # But remember that your code had to work for _any loopfree_ topology so
     # don't make it specific to this example!
-    print("Hello CS456 Student! You need to add code to this function "
-          "to complete part D of assignment 3!")
-
 
     src_ip = get_host_ip_from_dpid(source_dpid)
     src_mac = get_host_mac_from_dpid(source_dpid)
@@ -293,7 +290,7 @@ def install_udp_middlebox_flow( source_dpid
 
     # source host to middlebox
     for sw in range(len(src_to_midbox)):
-        print(f"Currently at {src_to_midbox[sw]}")
+        # print(f"Currently at {src_to_midbox[sw]}")
 
         inp_port = get_input_port(src_to_midbox, src_to_midbox[sw])
         match_fields = build_match_for(src_mac, dst_mac, src_ip, dst_ip, source_port, destination_port, inp_port)
@@ -310,7 +307,7 @@ def install_udp_middlebox_flow( source_dpid
 
     # middlebox to destination host
     for sw in range(len(midbox_to_dst)):
-        print(f"Currently at {midbox_to_dst[sw]}")
+        # print(f"Currently at {midbox_to_dst[sw]}")
 
         inp_port = get_input_port(midbox_to_dst, midbox_to_dst[sw])
         match_fields = build_match_for(src_mac, dst_mac, src_ip, dst_ip, source_port, destination_port, inp_port)
@@ -337,11 +334,11 @@ def do_install():
     run your program.
     """
 
-    source_dpid = 3
-    destination_dpid = 1
-    middlebox_dpid = 7
-    source_port = 7256
-    destination_port = 6256
+    source_dpid = 1
+    destination_dpid = 5
+    middlebox_dpid = 3
+    source_port = 5000
+    destination_port = 6000
     install_udp_middlebox_flow(source_dpid, destination_dpid, middlebox_dpid,
             source_port, destination_port)
 
