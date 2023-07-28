@@ -25,66 +25,67 @@ done
 # Avoid having to write "-O OpenFlow13" before all of your ovs-ofctl commands.
 ofctl='ovs-ofctl -O OpenFlow13'
 
-
 # ----------------------- Alice to Bob -------------------- #
 
 # OVS rules for S1
 $ofctl add-flow s1 \
-    ip,nw_dst=10.4.4.48,actions=mod_dl_src:0A:00:0A:01:00:02,mod_dl_dst:0A:00:04:01:00:01,output:2
+    dl_dst=0A:00:00:01:00:01,actions=mod_dl_src:0A:00:0A:01:00:02,mod_dl_dst:0A:00:04:01:00:01,output:2
 
 # OVS rules for R1
 $ofctl add-flow r1 \
-    dl_src=0A:00:0A:01:00:02,actions=mod_dl_src:0A:00:0E:FE:00:02,mod_dl_dst:0A:00:0A:FE:00:02,output:2
+    ip,nw_dst=10.4.4.48,actions=mod_dl_src:0A:00:0E:FE:00:02,mod_dl_dst:0A:00:0A:FE:00:02,output:2
 
 # OVS rules for S2
 $ofctl add-flow s2 \
-    ip,nw_src=10.1.1.17,nw_dst=10.4.4.48,actions=mod_dl_src:0A:00:01:01:00:01,mod_dl_dst:0A:00:01:02:00:00,output:1
+    dl_dst=0A:00:0A:FE:00:02,actions=mod_dl_src:0A:00:01:01:00:01,mod_dl_dst:B0:B0:B0:B0:B0:B0,output:1
 
 
 # ----------------------- Bob to Alice -------------------- #
 
 # OVS rules for S2
 $ofctl add-flow s2 \
-    ip,nw_src=10.4.4.48,nw_dst=10.1.1.17,actions=mod_dl_src:0A:00:0A:FE:00:02,mod_dl_dst:0A:00:10:FE:00:02,output:2
+    dl_dst=0A:00:01:01:00:01,actions=mod_dl_src:0A:00:0A:FE:00:02,mod_dl_dst:0A:00:10:FE:00:02,output:2
 
 # OVS rules for R1
 $ofctl add-flow r1 \
-    dl_src=0A:00:0A:FE:00:02,actions=mod_dl_src:0A:00:04:01:00:01,mod_dl_dst:0A:00:0A:01:00:02,output:1
+    ip,nw_src=10.4.4.48,nw_dst=10.1.1.17,actions=mod_dl_src:0A:00:04:01:00:01,mod_dl_dst:0A:00:0A:01:00:02,output:1
 
 # OVS rules for S1
 $ofctl add-flow s1 \
-    ip,nw_dst=10.1.1.17,actions=mod_dl_src:0A:00:00:01:00:01,mod_dl_dst:0A:00:00:02:00:00,output:1
+    dl_dst=0A:00:0A:01:00:02,actions=mod_dl_src:0A:00:00:01:00:01,mod_dl_dst:AA:AA:AA:AA:AA:AA,output:1
 
 
 # ----------------------- Bob to Carol -------------------- #
 
+# OVS rules for R1
+$ofctl add-flow r1 \
+    ip,nw_src=10.4.4.48,nw_dst=10.6.6.69,actions=mod_dl_src:0A:00:0E:FE:00:02,mod_dl_dst:0A:00:05:01:00:01,output:in_port
+
 # OVS rules for S2
 $ofctl add-flow s2 \
-    ip,nw_dst=10.6.6.69,dl_src=0A:00:01:02:00:00,actions=mod_dl_src:0A:00:0C:01:00:03,mod_dl_dst:0A:00:05:01:00:01,output:3
+    dl_src=0A:00:0E:FE:00:02,dl_dst=0A:00:05:01:00:01,actions=output:3
 
 # OVS rules for R2
 $ofctl add-flow r2 \
-    dl_src=0A:00:0C:01:00:03,actions=mod_dl_src:0A:00:10:FE:00:02,mod_dl_dst:0A:00:0B:FE:00:02,output:2
+    ip,nw_src=10.4.4.48,nw_dst=10.6.6.69,actions=mod_dl_src:0A:00:10:FE:00:02,mod_dl_dst:0A:00:0B:FE:00:02,output:2
 
 # OVS rules for S3
 $ofctl add-flow s3 \
-    ip,nw_dst=10.6.6.69,dl_src=0A:00:10:FE:00:02,actions=mod_dl_src:0A:00:02:01:00:01,mod_dl_dst:0A:00:02:02:00:00,output:1
-
+    dl_src=0A:00:10:FE:00:02,dl_dst=0A:00:0B:FE:00:02,actions=mod_dl_src:0A:00:02:01:00:01,mod_dl_dst:CC:CC:CC:CC:CC:CC,output:1
 
 # ----------------------- Carol to Bob -------------------- #
 
 # OVS rules for S3
 $ofctl add-flow s3 \
-    ip,nw_dst=10.4.4.48,dl_src=0A:00:02:02:00:00,actions=mod_dl_src:0A:00:0B:FE:00:02,mod_dl_dst:0A:00:10:FE:00:02,output:2
+    dl_src=CC:CC:CC:CC:CC:CC,dl_dst=0A:00:02:01:00:01,actions=output:2
 
 # OVS rules for R2
 $ofctl add-flow r2 \
-    dl_src=0A:00:0B:FE:00:02,actions=mod_dl_src:0A:00:05:01:00:01,mod_dl_dst:0A:00:0C:01:00:03,output:1
+    ip,nw_src=10.6.6.69,nw_dst=10.4.4.48,actions=mod_dl_src:0A:00:05:01:00:01,mod_dl_dst:0A:00:0C:01:00:03,output:1
 
 # OVS rules for S2
 $ofctl add-flow s2 \
-    ip,nw_src=10.6.6.69,dl_src=0A:00:05:01:00:01,actions=mod_dl_src:0A:00:01:01:00:01,mod_dl_dst:0A:00:01:02:00:00,output:1
-
+    dl_src=0A:00:05:01:00:01,dl_dst=0A:00:0C:01:00:03,actions=mod_dl_src:0A:00:01:01:00:01,mod_dl_dst:B0:B0:B0:B0:B0:B0,output:1
 
 	
 # Print the flows installed in each switch

@@ -50,15 +50,15 @@ def run():
         # Set interface IP and MAC addresses for hosts
         alice = net.get('alice')
         alice.intf('alice-eth0').setIP('10.1.1.17', 24)
-        alice.intf('alice-eth0').setMAC('0A:00:00:02:00:00')
+        alice.intf('alice-eth0').setMAC('AA:AA:AA:AA:AA:AA')
 
         bob = net.get('bob')
         bob.intf('bob-eth0').setIP('10.4.4.48', 24)
-        bob.intf('bob-eth0').setMAC('0A:00:01:02:00:00')
+        bob.intf('bob-eth0').setMAC('B0:B0:B0:B0:B0:B0')
 
         carol = net.get('carol')
         carol.intf('carol-eth0').setIP('10.6.6.69', 24)
-        carol.intf('carol-eth0').setMAC('0A:00:02:02:00:00')
+        carol.intf('carol-eth0').setMAC('CC:CC:CC:CC:CC:CC')
 
         # Set interface MAC address for switches (NOTE: IP
         # addresses are not assigned to switch interfaces)
