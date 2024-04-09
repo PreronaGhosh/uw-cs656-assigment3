@@ -1,2 +1,2 @@
-# uw-cs656-assigment3
-Assignment 3 of CS 656 (Computer Networks)
+# Network on a Laptop
+Assignment 3 of CS 656 (Computer Networks) at UWaterloo
